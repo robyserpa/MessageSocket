@@ -1,5 +1,3 @@
-
-
 $(function (){
     const soket = io(); 
 
@@ -16,17 +14,27 @@ $(function (){
     $userForm.on("submit", event => {
         event.preventDefault();
         if ($user.val() != ""){
-            isActive = true;
             soket.emit('User', $user.val());
             user = $user.val() +": ";
-        }else{
-            isActive = false
         }
+    });
+
+    soket.on('User aceptado', userActive => {
+        if(userActive && $user.val()+": " == user){
+            $user.val(user + " Conectado");
+        }
+        if(!userActive && $user.val()+": " == user){
+            $user.val(user + " Ya esta en uso");
+        }
+        isActive = userActive;
     });
 
     $smsForm.on("submit", event => {
         event.preventDefault();
-        if (isActive){
+        if (
+            isActive && $user.val() != $user.val() +": Ya esta en uso" &&
+            $user.val() != "Ingresar usuario" && $user.val() != "" && user != ""
+        ){
             if ($sms.val() != ""){
                 soket.emit('Envia SMS', user + $sms.val());
                 $sms.val('');

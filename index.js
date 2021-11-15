@@ -10,11 +10,6 @@ require('./socket')(io);
 
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
-    console.log('entra');
-    // res.send('hi')
-});
-
-server.listen(3000, () =>{
+server.listen(9000, () =>{
     console.log("Servidor Inicado");
 });
